@@ -4,12 +4,15 @@ import com.example.vortex_games.config.jwt.JwtService;
 import com.example.vortex_games.user.Role;
 import com.example.vortex_games.user.User;
 import com.example.vortex_games.user.UserRepository;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final EmailSenderService emailSenderService;
 
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
@@ -39,8 +43,45 @@ public class AuthService {
                 .role(Role.USER)
                 .build();
         userRepository.save(user);
+
+        String emailSubject = user.getNombre() + " " + user.getApellido() + " su usuario VortexGames fué creado correctamente.";
+        String emailBody = "Su usuario ha sido creado correctamente, puede entrar a su cuenta con el link www.votext.com";
+        /* String htmlBody =
+                "<html>"
+                + "<body>"
+                + "<h1 style=\"color:blue;\">¡Gracias por registrarte "
+                + user.getNombre() + " " + user.getApellido() + "!</h1>"
+                + "<h2>¡Tu cuenta ha sido creada exitosamente!</h2>"
+                + "<h3>Accede a ella desde este link</h3>"
+                + "<href="+"www.vortex.com"+">www.vortex.com</a>"
+                + "</body>"
+                + "</html>";
+*/
+        emailSenderService.sendSimpleEmail(
+                request.getUsername(),
+                emailSubject,
+                request.getNombre(),
+                request.getApellido());
+
         return AuthResponse.builder()
                 .token(jwtService.getToken(user))
                 .build();
     }
+
+    public Optional<User> changeRole(User userRequest) {
+        Optional<User> optionalUser = userRepository.findByUsername(userRequest.getUsername());
+
+            if (optionalUser.isPresent()){
+                User user = optionalUser.get();
+                user.setRole(userRequest.getRole());
+                userRepository.save(user);
+                return Optional.of(user);
+
+            } else {
+                // Manejar el caso en que el usuario no existe
+                return Optional.empty();
+            }
+    }
+
+    public List<User> listUsers(){return userRepository.findAll();}
 }

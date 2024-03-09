@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -64,5 +65,6 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "characteristic_id")
     )
     private Set<Characteristic> characteristics=new HashSet<>();
+
 
 }

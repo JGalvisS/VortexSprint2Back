@@ -41,6 +41,9 @@ public class Category {
     @JsonIgnore
     private Set<Product> products=new HashSet<>();
 
-
-
+    public Category(@NonNull String title, @NonNull String description, Image image) {
+        this.title = title;
+        this.description = description;
+        this.image = image;
+    }
 }

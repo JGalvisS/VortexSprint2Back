@@ -32,9 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 
-<<<<<<< HEAD
-
-*.yaml
-=======
-*.yaml
->>>>>>> guille
+# Ignorar el archivo application.yaml
+application.yaml

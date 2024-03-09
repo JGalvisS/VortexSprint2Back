@@ -34,9 +34,8 @@ public class Characteristic {
     @JsonIgnore
     private Set<Product> products=new HashSet<>();
 
-
-
-
-
-
+    public Characteristic(@NonNull String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }

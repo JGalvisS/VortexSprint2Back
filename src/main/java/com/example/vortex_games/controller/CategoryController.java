@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/categorias")
@@ -39,16 +37,9 @@ public class CategoryController {
     public ResponseEntity<String> eliminarCategoria(@PathVariable Long id) throws ResourceNotFoundException {
         Optional<Category> categoriBuscada=categoryService.searchById(id);
         if(categoriBuscada.isPresent()) {
-            Set<Product> productosconLaCategoria= categoriBuscada.get().getProducts();
-            if(productosconLaCategoria.isEmpty()){
-                Category category = categoriBuscada.get();
-                categoryService.deleteCategory(category);
-                return ResponseEntity.ok("The category has ben delete");
-            }
-            else {
-                return ResponseEntity.ok("La categoria tiene productos asociados");
-            }
-
+            Category category = categoriBuscada.get();
+            categoryService.deleteCategory(category);
+            return ResponseEntity.ok("The category has ben delete");
         }
         else{
             throw  new ResourceNotFoundException("The category is not exist");

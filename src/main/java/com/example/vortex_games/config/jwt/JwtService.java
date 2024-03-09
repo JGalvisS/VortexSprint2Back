@@ -30,13 +30,13 @@ public class JwtService {
                 .builder()
                 .claims(extraClaims)
                 .claim("userId", user.getId())
-                .claim("rol", user.getRole())
-                .claim("usuario", user.getUsername())
+                .claim("role", user.getRole())
+                .subject(user.getUsername()) //Tengo que guardar si o si así el usuario porque si no
+        //spring security no lo detecta y da error a querer extraer info con ese token.
                 .claim("nombre", user.getNombre())
                 .claim("apellido", user.getApellido())
-                //Acá se saca el username---> .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                //Con esta linea le doy una expiración de un día---> .expiration(new Date(System.currentTimeMillis()+1000*60*24))
+                .expiration(new Date(System.currentTimeMillis()+1000*60*24))//Con esta linea le doy una expiración de un día
                 .signWith(getKey())
                 .compact();
     }

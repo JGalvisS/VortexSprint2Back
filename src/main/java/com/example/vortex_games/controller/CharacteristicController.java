@@ -50,7 +50,7 @@ public class CharacteristicController {
         }
     }
 
-    @DeleteMapping("/delete")//<<----- Elimina una caracteristica de la base de datos
+    @DeleteMapping("/delete")//<<----- Elimina una caracteristica de la base de datos pasandole la caracteristica completa
     public ResponseEntity<String> remove(@RequestBody Characteristic characteristic) throws ResourceNotFoundException {
         Optional<Characteristic> characteristicSearched = characteristicService.searchByName(characteristic.getName());
         if(characteristicSearched.isPresent()){
@@ -61,18 +61,6 @@ public class CharacteristicController {
         }
 
     }
-
-    @PutMapping("/update")//<<------ Actualizar la caracteriztica en cuestion
-    public ResponseEntity<String> update(@RequestBody Characteristic characteristic) throws ResourceNotFoundException{
-        Optional<Characteristic> characteristicSearched = characteristicService.searchById(characteristic.getId());
-        if(characteristicSearched.isPresent()){
-            characteristicService.updateCharacteristic(characteristic);
-            return ResponseEntity.ok("Se actualizo la caracteristica con los datos nuevos");
-        }else{
-            throw new ResourceNotFoundException("No se encontro una caracteristica con esos datos, debe agregar una primero");
-        }
-    }
-
     @DeleteMapping("/delete/{id}")//<<----- Elimina una caracteristica de la base de datos solo por id
     public ResponseEntity<String> removeById(@PathVariable Long id) throws ResourceNotFoundException {
         Optional<Characteristic> characteristicSearched = characteristicService.searchById(id);
@@ -85,5 +73,17 @@ public class CharacteristicController {
 
     }
 
+
+
+    @PutMapping("/update")//<<------ Actualizar la caracteriztica en cuestion
+    public ResponseEntity<String> update(@RequestBody Characteristic characteristic) throws ResourceNotFoundException{
+        Optional<Characteristic> characteristicSearched = characteristicService.searchById(characteristic.getId());
+        if(characteristicSearched.isPresent()){
+            characteristicService.updateCharacteristic(characteristic);
+            return ResponseEntity.ok("Se actualizo la caracteristica con los datos nuevos");
+        }else{
+            throw new ResourceNotFoundException("No se encontro una caracteristica con esos datos, debe agregar una primero");
+        }
+    }
 
 }
