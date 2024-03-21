@@ -6,8 +6,9 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 
 
@@ -30,13 +31,9 @@ public class Product {
     @Column(unique = true)
     private String name;
 
-
-
     @ManyToOne( fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
-
-
 
     @NonNull
     @Column(nullable = false)
@@ -65,6 +62,13 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "characteristic_id")
     )
     private Set<Characteristic> characteristics=new HashSet<>();
+
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    private List<Calificacion> calificacions;
+
+    @NonNull
+    private double promedioCalificaciones=0;
+
 
 
 }

@@ -1,10 +1,14 @@
-package com.example.vortex_games.auth;
+package com.example.vortex_games.service;
 
-import com.example.vortex_games.config.jwt.JwtService;
-import com.example.vortex_games.user.Role;
-import com.example.vortex_games.user.User;
-import com.example.vortex_games.user.UserRepository;
-import org.springframework.core.io.ClassPathResource;
+
+import com.example.vortex_games.auth.AuthResponse;
+import com.example.vortex_games.auth.EmailSenderService;
+import com.example.vortex_games.auth.LoginRequest;
+import com.example.vortex_games.auth.RegisterRequest;
+import com.example.vortex_games.entity.Role;
+import com.example.vortex_games.entity.User;
+import com.example.vortex_games.repository.UserRepository;
+import com.example.vortex_games.service.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -71,16 +75,16 @@ public class AuthService {
     public Optional<User> changeRole(User userRequest) {
         Optional<User> optionalUser = userRepository.findByUsername(userRequest.getUsername());
 
-            if (optionalUser.isPresent()){
-                User user = optionalUser.get();
-                user.setRole(userRequest.getRole());
-                userRepository.save(user);
-                return Optional.of(user);
+        if (optionalUser.isPresent()){
+            User user = optionalUser.get();
+            user.setRole(userRequest.getRole());
+            userRepository.save(user);
+            return Optional.of(user);
 
-            } else {
-                // Manejar el caso en que el usuario no existe
-                return Optional.empty();
-            }
+        } else {
+            // Manejar el caso en que el usuario no existe
+            return Optional.empty();
+        }
     }
 
     public List<User> listUsers(){return userRepository.findAll();}

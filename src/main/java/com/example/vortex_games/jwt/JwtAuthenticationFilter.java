@@ -1,7 +1,8 @@
-package com.example.vortex_games.config.jwt;
+package com.example.vortex_games.jwt;
 
 import java.io.IOException;
 
+import com.example.vortex_games.service.JwtService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

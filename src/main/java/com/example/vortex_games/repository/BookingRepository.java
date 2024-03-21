@@ -1,22 +1,17 @@
 package com.example.vortex_games.repository;
 
-
+import com.example.vortex_games.entity.Booking;
 import com.example.vortex_games.entity.Calificacion;
-import com.example.vortex_games.entity.Category;
 import com.example.vortex_games.entity.Product;
+import com.example.vortex_games.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
-
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product,Long> {
+public interface BookingRepository extends JpaRepository<Booking , Long> {
 
-    Optional<Product> findByName(String name);
-
-    List<Product> findByCategory( Category category);
-
+    List<Booking> findByUsuarioAndProductosReservados(User usuario, Product producto);
 
 }

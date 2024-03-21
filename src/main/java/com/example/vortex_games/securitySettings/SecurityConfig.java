@@ -1,9 +1,11 @@
-package com.example.vortex_games.config;
+package com.example.vortex_games.securitySettings;
 
-import com.example.vortex_games.config.jwt.JwtAuthenticationFilter;
+
+import com.example.vortex_games.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,20 +25,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf ->
-                        csrf
-                        .disable())
+                        csrf.disable())
                 .authorizeHttpRequests(authRequest ->
-                        authRequest.requestMatchers("/**"/*"/auth/**", "/products/search-id/**", "/products/list-products/**", "/products/search-category/**",
-                                        "/products/search-caracteristic/**"*/).permitAll()
+                        authRequest.requestMatchers("/**").permitAll()
                                 //.requestMatchers("/products/add-product").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager ->
                         sessionManager
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                        .build();
+                .build();
 
 
 

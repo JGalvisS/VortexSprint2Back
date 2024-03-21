@@ -1,17 +1,16 @@
 package com.example.vortex_games.auth;
 
-import com.example.vortex_games.exception.ExistingProductException;
+
+import com.example.vortex_games.entity.User;
 import com.example.vortex_games.exception.ResourceNotFoundException;
-import com.example.vortex_games.user.User;
+import com.example.vortex_games.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/auth")

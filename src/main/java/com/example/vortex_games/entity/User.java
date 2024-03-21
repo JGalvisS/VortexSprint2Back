@@ -1,24 +1,21 @@
-package com.example.vortex_games.user;
+package com.example.vortex_games.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
-public class User implements UserDetails {
+public class User implements UserDetails{
 
     @Id
     @GeneratedValue
@@ -31,6 +28,10 @@ public class User implements UserDetails {
     String direccion;
     @Enumerated(EnumType.STRING)
     Role role;
+
+
+    public User(int i, String admin, String password, String admin1, String admin2, String adminDir, Role admin3) {
+    }
 
 
     @Override

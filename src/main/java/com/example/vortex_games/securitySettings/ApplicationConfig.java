@@ -1,8 +1,7 @@
-package com.example.vortex_games.config;
+package com.example.vortex_games.securitySettings;
 
-import com.example.vortex_games.user.UserRepository;
+import com.example.vortex_games.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

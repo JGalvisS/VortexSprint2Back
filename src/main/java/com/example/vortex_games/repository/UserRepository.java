@@ -1,5 +1,6 @@
-package com.example.vortex_games.user;
+package com.example.vortex_games.repository;
 
+import com.example.vortex_games.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,12 +1,10 @@
 package com.example.vortex_games.controller;
 
-import com.example.vortex_games.entity.Category;
-import com.example.vortex_games.entity.Characteristic;
 import com.example.vortex_games.entity.Product;
-import com.example.vortex_games.exception.BadRequestException;
 import com.example.vortex_games.exception.ExistingProductException;
 import com.example.vortex_games.exception.ResourceNotFoundException;
 import com.example.vortex_games.service.ProductService;
+import com.example.vortex_games.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +19,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/add-product")
     public ResponseEntity<Product> add(@RequestBody Product producto) throws ExistingProductException {
@@ -77,7 +78,8 @@ public class ProductController {
         if(productoBuscado.isPresent()){
             productService.updateProduct(product);
             return new ResponseEntity<>("product successfully updated", HttpStatus.OK);
-        }else{
+        }
+        else{
             throw new ResourceNotFoundException("No existe un producto con el id indicado");
         }
 
