@@ -2,6 +2,7 @@ package com.example.vortex_games.service;
 
 import com.example.vortex_games.Dto.DtoBooking;
 import com.example.vortex_games.Dto.DtoFechasBusqueda;
+import com.example.vortex_games.Dto.DtopProductos;
 import com.example.vortex_games.entity.Booking;
 import com.example.vortex_games.entity.Product;
 import com.example.vortex_games.entity.User;
@@ -112,16 +113,22 @@ public class BookingService {
         List<Product> productosDisponibles = new ArrayList<>();
         List<Product> productosDeLaAplicacion = productRepository.findAll();
 
+        LocalDate inicio = dtoFechasBusqueda.getInicio();
+        LocalDate fin = dtoFechasBusqueda.getFin();
+
+        if (inicio == null && fin == null) return productosDeLaAplicacion;
+
         // Iterar sobre todos los productos de la aplicación
         for (Product pro: productosDeLaAplicacion ) {
             boolean productoEnReserva = false;
             // Verificar si el producto está presente en alguna reserva dentro del rango especificado
             for (Booking reserva: reservas) {
                 for (Product productoReservado: reserva.getProductosReservados()) {
+
+                    boolean reservaEnRango = inicio == null || fin == null ||
+                            (!inicio.isAfter(reserva.getFechaFin()) && !fin.isBefore(reserva.getFechaInicio()));
                     // Si el producto está en alguna reserva dentro del rango, marcarlo como reservado
-                    if (pro.getId().equals(productoReservado.getId()) &&
-                            !dtoFechasBusqueda.getInicio().isAfter(reserva.getFechaFin()) &&
-                            !dtoFechasBusqueda.getFin().isBefore(reserva.getFechaInicio())) {
+                    if (pro.getId().equals(productoReservado.getId()) && reservaEnRango) {
                         productoEnReserva = true;
                         break;
                     }
@@ -181,7 +188,7 @@ public class BookingService {
         List<DtoFechasBusqueda> fechasReservadas = new ArrayList<>();
         for (Booking booking: reservas){
             DtoFechasBusqueda fechaInicioFin = new DtoFechasBusqueda();
-            if(booking.getFechaFin().isAfter(LocalDate.now()) && booking.getProductosReservados().contains(productoBuscado)){
+            if((booking.getFechaFin().isAfter(LocalDate.now()) || booking.getFechaFin().isEqual(LocalDate.now())) && booking.getProductosReservados().contains(productoBuscado)){
                 fechaInicioFin.setInicio(booking.getFechaInicio());
                 fechaInicioFin.setFin(booking.getFechaFin());
                 fechasReservadas.add(fechaInicioFin);
@@ -200,13 +207,13 @@ public class BookingService {
 
     public DtoBooking bookingADto(Booking booking){
         DtoBooking dtoBooking=new DtoBooking();
-        List<String> productos=new ArrayList<>();
+        List<DtopProductos> productos=new ArrayList<>();
         dtoBooking.setId(booking.getId());
         dtoBooking.setFechaInicio(booking.getFechaInicio());
         dtoBooking.setFechaFin(booking.getFechaFin());
         dtoBooking.setUserName(booking.getUsuario().getUsername());
         for (Product pro: booking.getProductosReservados()) {
-            productos.add(pro.getName());
+            productos.add(new DtopProductos(pro.getId(),pro.getName()));
         }
         dtoBooking.setProductos(productos);
         return dtoBooking;

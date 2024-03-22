@@ -106,6 +106,7 @@ public class CalificacionService {
         dtoCalificacion.setId(calificacion.getId());
         dtoCalificacion.setUsername(calificacion.getUsuario().getUsername());
         dtoCalificacion.setProductoName(calificacion.getProducto().getName());
+        dtoCalificacion.setProductId(calificacion.getProducto().getId());
         dtoCalificacion.setValorCalificacion(calificacion.getValor());
         dtoCalificacion.setComentario(calificacion.getComentario());
         return dtoCalificacion;

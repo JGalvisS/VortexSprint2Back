@@ -25,6 +25,6 @@ public class DtoBooking {
 
     private String userName;
 
-    private List<String> productos =new ArrayList<>();
+    private List<DtopProductos> productos =new ArrayList<>();
 
 }

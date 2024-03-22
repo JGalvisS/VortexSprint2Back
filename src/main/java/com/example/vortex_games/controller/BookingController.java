@@ -67,11 +67,13 @@ public class BookingController {
     public ResponseEntity<List<Product>>  productosDisponibles(@RequestBody DtoFechasBusqueda dtoFechasBusqueda) throws ResourceNotFoundException, BadRequestException {
         List<Product> productDisponible= bookingService.ProductosDisponibles(dtoFechasBusqueda);
 
-        if (dtoFechasBusqueda.getInicio().isBefore(LocalDate.now())) {
+        LocalDate inicio = dtoFechasBusqueda.getInicio();
+        LocalDate fin = dtoFechasBusqueda.getFin();
+
+        if (inicio != null && inicio.isBefore(LocalDate.now())) {
             throw new BadRequestException("La fecha de inicio no puede ser menor a hoy");
-        }
-        else if (dtoFechasBusqueda.getFin().isBefore(dtoFechasBusqueda.getInicio())) {
-            throw new BadRequestException("La fecha de finalizacion no puede ser menor a la fecha de inicio");
+        } else if (inicio != null && fin != null && fin.isBefore(inicio)) {
+            throw new BadRequestException("La fecha de finalización no puede ser menor a la fecha de inicio");
         }
 
         if(productDisponible.size()<=0){

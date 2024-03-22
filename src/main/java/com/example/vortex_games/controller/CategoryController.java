@@ -21,15 +21,17 @@ public class CategoryController {
     CategoryService categoryService;
 
     @PostMapping("/add-categoria")
-    public ResponseEntity<Category> addCategoria(@RequestBody Category category) throws ExistingProductException {
+    public ResponseEntity<Category> addCategoria(@RequestBody Category category) throws ExistingProductException, BadRequestException {
         Optional<Category> searchedCategoria=categoryService.searchByName(category.getTitle());
         if(searchedCategoria.isPresent()){
-            throw new ExistingProductException("The title is already in use");
+            throw new ExistingProductException("El nombre ya existe");
         }
-        else if(category !=null){
-            return ResponseEntity.ok(categoryService.addCategory(category));
+        else if(category.getImage().getImageUrl().length()>=250){
+            throw new BadRequestException("La url de la imagen no puede tener mas de 250 caracteres");
+        } else if (!category.getImage().getImageUrl().startsWith("http")) {
+            throw new BadRequestException(("Url de la imagen invalida. Camibala"));
         }
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(categoryService.addCategory(category));
 
     }
 

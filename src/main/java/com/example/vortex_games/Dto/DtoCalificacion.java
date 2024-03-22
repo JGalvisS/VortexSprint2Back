@@ -13,6 +13,8 @@ public class DtoCalificacion {
     private long id;
     private String username;
     private String productoName;
+    private Long productId;
     private Integer valorCalificacion;
     private String comentario;
+
 }
