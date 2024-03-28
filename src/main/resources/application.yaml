@@ -1,6 +1,6 @@
 db:
-  url: jdbc:mysql://localhost:3306/vortex
+  url: jdbc:mysql://root:GIiEnaHLbpEVLmJHTCTAABBcvamRplbH@monorail.proxy.rlwy.net:52423/railway
   username: root
-  password: root
+  password: GIiEnaHLbpEVLmJHTCTAABBcvamRplbH
   email: vortexgames19922024@gmail.com
   passwordEmail: mipb ezcg ejco smxk
