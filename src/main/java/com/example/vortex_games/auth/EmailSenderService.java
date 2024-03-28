@@ -33,7 +33,7 @@ public class EmailSenderService {
                             + "<h2>¡Tu cuenta ha sido creada exitosamente!</h2>"
                             + "<h3>" +
                             "Accede a ella desde este "
-                            + "<a href="+"http://localhost:5173/"+">Link</a> "+"</h3>"
+                            + "<a href="+"http://despliegue-front-phi.vercel.app/"+">Link</a> "+"</h3>"
                             //+ "<img src='cid:Logo'/>"
                             + "</body>"
                             + "</html>";
@@ -47,6 +47,22 @@ public class EmailSenderService {
         }
         mailSender.send(message);
 
+    }
+
+
+    public void sendEmailReserva(String toEmail, String subject, String body) {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = null;
+        try {
+            helper = new MimeMessageHelper(message, true);
+            helper.setTo(toEmail);
+            helper.setSubject(subject);
+            helper.setText(body, true); // Set true to indicate HTML content
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+        mailSender.send(message);
     }
 
 }
