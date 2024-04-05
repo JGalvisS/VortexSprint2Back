@@ -1,8 +1,10 @@
 package com.example.vortex_games.controller;
 
 import com.example.vortex_games.entity.Product;
+import com.example.vortex_games.exception.BadRequestException;
 import com.example.vortex_games.exception.ExistingProductException;
 import com.example.vortex_games.exception.ResourceNotFoundException;
+import com.example.vortex_games.service.ImageService;
 import com.example.vortex_games.service.ProductService;
 import com.example.vortex_games.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +24,22 @@ public class ProductController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    ImageService imageService;
 
     @PostMapping("/add-product")
-    public ResponseEntity<Product> add(@RequestBody Product producto) throws ExistingProductException {
+    public ResponseEntity<Product> add(@RequestBody Product producto) throws ExistingProductException, BadRequestException {
         Optional<Product> searchedProduct=productService.searchByName(producto.getName());
         if(searchedProduct.isPresent()){
-            throw new ExistingProductException("The name is already in use");
+            throw new ExistingProductException("El producto ya existe");
+        }
+        else if(imageService.hasDuplicateImages(producto)){
+            throw new BadRequestException("Hay imagenes duplicadas, estas deben ser unicas");
         }
         else if(producto !=null){
             return ResponseEntity.ok(productService.addProduct(producto));
         }
         return ResponseEntity.badRequest().build();
-
     }
 
     @GetMapping("/list-products")

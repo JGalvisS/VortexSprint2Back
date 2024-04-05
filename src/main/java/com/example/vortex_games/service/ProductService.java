@@ -93,8 +93,9 @@ public class ProductService {
     }
 
     public void updateProduct(Product product){
-        productRepository.deleteById(product.getId());
-        this.addProduct(product);
+        productRepository.save(product);
+        /*productRepository.deleteById(product.getId());
+        this.addProduct(product);*/
     }
 
 
